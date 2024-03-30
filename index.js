@@ -1,17 +1,23 @@
-import express from 'express';
-import route from "./src/routes/index.route.js"
+const express = require("express");
+const cors = require("cors");
+
+const db = require("./src/models");
+const route=require("./src/routes/index.route")
 const port=8000;
 
 
 const app=express();
 
 app.use('/api',route);
-// app.use('/',(req,res)=>{
-//     res.send("welcome to app")
-// });
+app.get('/',(req,res)=>{
+    res.send("welcome to app")
+});
+
+db.sequelize.sync().then(() => {
 app.listen(port,(err)=>{
     if(err){
         console.log("Issue in launching server:",err)
     }
     console.log("server is up on port:"+port)
+});
 });

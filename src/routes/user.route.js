@@ -1,6 +1,7 @@
-import express from 'express'
+const express=require('express')
 
-import Usercontroller from '../controller/user.controller.js'
+const Usercontroller=require( '../controller/user.controller.js')
+
 const router=express.Router();
 
 //create object of controller class
@@ -11,4 +12,4 @@ router.get('/create',userController.register);
 //user login route
 router.get('/login',userController.login);
 
-export default router;
+module.exports= router;
