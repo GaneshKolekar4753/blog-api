@@ -1,14 +1,14 @@
 import express from 'express';
-
+import route from "./src/routes/index.route.js"
 const port=8000;
 
 
 const app=express();
 
-app.use('/',(req,res)=>{
-    res.send("welcome in app")
-})
-
+app.use('/api',route);
+// app.use('/',(req,res)=>{
+//     res.send("welcome to app")
+// });
 app.listen(port,(err)=>{
     if(err){
         console.log("Issue in launching server:",err)
