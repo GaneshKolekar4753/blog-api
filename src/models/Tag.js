@@ -6,6 +6,10 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
     },
   });
+  Tag.associate=(models)=>{
+    Tag.belongsToMany(models.Post, { through: 'PostTags' });
+
+  };
 
   return Tag;
 };

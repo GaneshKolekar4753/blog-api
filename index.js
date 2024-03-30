@@ -8,6 +8,8 @@ const port=8000;
 
 const app=express();
 
+app.use(express.json());
+app.use(express.urlencoded())
 app.use('/api',route);
 app.get('/',(req,res)=>{
     res.send("welcome to app")

@@ -8,8 +8,10 @@ const router=express.Router();
 const userController=new Usercontroller();
 
 //user regidster route
-router.get('/create',userController.register);
+router.post('/create',userController.register);
 //user login route
-router.get('/login',userController.login);
+router.post('/login',userController.login);
+//get all users
+router.get('/',userController.getUsers);
 
 module.exports= router;

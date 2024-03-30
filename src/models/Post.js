@@ -19,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
   });
+  Post.associate=(models)=>{
+    Post.belongsTo(models.User, { as:'users',foreignKey: 'userId' });
+    Post.belongsToMany(models.Tag, { through: 'PostTags' });
+  };
 
   return Post;
 };

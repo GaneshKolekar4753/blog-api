@@ -13,7 +13,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM("admin", "user"),
       allowNull: false,
     },
+    
   });
+User.associate=(models)=>{
+  User.hasMany(models.Post, { as:"posts",foreignKey: 'userId' });
+};
 
   return User;
 };
