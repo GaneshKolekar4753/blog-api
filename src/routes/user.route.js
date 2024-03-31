@@ -1,6 +1,7 @@
 const express=require('express')
 
 const Usercontroller=require( '../controller/user.controller.js')
+const auth=require('../middleware/auth');
 
 const router=express.Router();
 
@@ -12,6 +13,6 @@ router.post('/create',userController.register);
 //user login route
 router.post('/login',userController.login);
 //get all users
-router.get('/',userController.getUsers);
+router.get('/',auth,userController.getUsers);
 
 module.exports= router;

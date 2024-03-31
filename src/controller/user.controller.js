@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const db = require("../models/index");
+
 const secretKey = "GaneshSecret";
 
 class Usercontroller {
@@ -65,6 +66,7 @@ class Usercontroller {
       const payload = {
         username: username,
         role: user.role,
+        id:user.id
       };
 
       jwt.sign(
@@ -74,7 +76,7 @@ class Usercontroller {
           if (err) {
             throw err;
           }
-          res.status(200).json({
+         return res.status(200).json({
             success: true,
             token: token,
           });
@@ -82,14 +84,14 @@ class Usercontroller {
       );
     } catch (err) {
       console.log(err.message);
-      res.status(500).send("Server error");
+      return res.status(500).send("Server error");
     }
   }
 
   async getUsers (req, res) {
     try {
         const users = await db.User.findAll()
-        res.status(201).json({ "status": "ok", "message": "Get User", users })
+       return  res.status(201).json({ "status": "ok", "message": "Get User", users })
     } catch (error) {
         return res.status(401).json({ "status": "error", "message": error })
     }
