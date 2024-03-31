@@ -124,20 +124,27 @@ class PostController {
         ];
       }
       if (startDate && endDate) {
+        // Merge date range condition with existing conditions
         filter.where = {
-          createdAt: { [Op.between]: [startDate, endDate] },
+          ...filter.where,
+          createdAt: { [Op.between]: [new Date(startDate),new Date(endDate)] },
         };
       }
       if (authorId) {
+        // Merge author ID condition with existing conditions
         filter.where = { ...filter.where, userId: authorId };
       }
 
       // Find posts based on filters
-      const { count, rows: posts } = await db.Post.findAndCountAll({
+      const { count, rows:posts } = await db.Post.findAndCountAll({
         ...filter,
       });
 
-      res.status(200).json({ count, posts });
+    //   const out=await db.Post.findAll({
+    //     where:{createdAt:{[Op.between]: [new Date(startDate), new Date(endDate)]}}
+    //   })
+
+      res.status(200).json( {count,posts} );
     } catch (error) {
       res.status(500).json({ error: "Internal server error", error });
     }
