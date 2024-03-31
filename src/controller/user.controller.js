@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { validationResult } = require("express-validator");
 
 const db = require("../models/index");
 
@@ -8,6 +9,11 @@ const secretKey = "GaneshSecret";
 class Usercontroller {
   //register user
   async register(req, res) {
+    //return error msg if input is not valid
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      return res.status(400).json({ errors: result.array() });
+    }
     const { username, password, role } = req.body;
     try {
       let user = await db.User.findOne({
@@ -94,24 +100,27 @@ class Usercontroller {
           .json({ message: "access denied.only admin and author has access" });
       }
       const users = await db.User.findAll();
-      if(!users){
-        return res.status(404).json({ status: "user not found", message: error });
+      if (!users) {
+        return res
+          .status(404)
+          .json({ status: "user not found", message: error });
       }
       return res.status(201).json({ status: "ok", message: "Get User", users });
     } catch (error) {
-        res.status(500).json({ error: "Internal server error" });
+      res.status(500).json({ error: "Internal server error" });
     }
   }
   async getOwnProfile(req, res) {
     try {
-      const users = await db.User.findAll({where:{id:req.user.id}});
-      if(!users){
-        return res.status(404).json({ status: "user not found", message: error });
+      const users = await db.User.findAll({ where: { id: req.user.id } });
+      if (!users) {
+        return res
+          .status(404)
+          .json({ status: "user not found", message: error });
       }
       return res.status(201).json({ status: "ok", message: "Get User", users });
-
     } catch (error) {
-        res.status(500).json({ error: "Internal server error" });
+      res.status(500).json({ error: "Internal server error" });
     }
   }
 }

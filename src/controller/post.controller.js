@@ -237,7 +237,7 @@ class PostController {
       await post.removeTag(post.Tag);
       // Delete the post
       await post.destroy();
-      res.status(200).json({ message: "deleted successfully", tags });
+      res.status(200).json({ message: "deleted successfully" });
     } catch (error) {
       res.status(500).json({ error: "Internal server error", error });
     }
