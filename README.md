@@ -1,6 +1,8 @@
 <h1>Blogs-Api 📝</h1>
 
-<p>The Blog Management API is a RESTful API built with Node.js, Express.js, and Sequelize. It provides functionalities to manage blog posts, tags, and user accounts within a blog platform. The API includes features such as CRUD operations for posts and tags, search/filter functionalities, user authentication, and role-based access control.</p>
+<p>The Blog Management API is a RESTful API built with Node.js, Express.js, and Sequelize. It provides functionalities to manage blog posts, tags, and user accounts within a blog platform. The API includes features such as CRUD operations for posts and tags, search/filter functionalities, user authentication, input validation using express-validator,and role-based access control.</p>
+
+<p>documentation Link: <a href="https://documenter.getpostman.com/view/31697134/2sA35HVziB#dccd7269-079b-4736-938b-d176311d3547"></a>https://documenter.getpostman.com/view/31697134/2sA35HVziB#dccd7269-079b-4736-938b-d176311d3547 🌐</p>
 
 <h2>Technologies Used 🛠️</h2>
 
@@ -49,4 +51,4 @@
 </ol>
 
 
-<p>documentation Link: <a href="https://documenter.getpostman.com/view/31697134/2sA35HVziB#dccd7269-079b-4736-938b-d176311d3547"></a>https://documenter.getpostman.com/view/31697134/2sA35HVziB#dccd7269-079b-4736-938b-d176311d3547 🌐</p>
+
