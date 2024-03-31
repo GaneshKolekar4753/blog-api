@@ -40,7 +40,6 @@ class Tagcontroller {
       const { postId, tagId } = req.params;
       const { newTagName } = req.body;
       const currentUser = req.user;
-      currentUser.role = "admin";
       // Find the post by id
       const post = await db.Post.findByPk(postId);
       // If post not found, return 404 Not Found

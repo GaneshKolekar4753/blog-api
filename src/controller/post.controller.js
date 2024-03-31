@@ -129,7 +129,6 @@ class PostController {
         };
       }
       if (authorId) {
-        // console.log("*********",[...filter.where])
         filter.where = { ...filter.where, userId: authorId };
       }
 
@@ -146,7 +145,33 @@ class PostController {
 
   //update post
   async updatePost(req, res) {
+    try {
+      const { postId } = req.params;
+      const { title, content } = req.body;
+      const currentUser = req.user;
+      // Find the post by id
+      const post = await db.Post.findByPk(postId);
 
+      // If post not found, return 404 Not Found
+      if (!post) {
+        return res.status(404).json({ error: "Post not found" });
+      }
+      //authorization
+      if (currentUser.role === "user") {
+        if (post.userId !== currentUser.id) {
+          return res.status(403).json({
+            meaasge: "access denied.only admin and author has access",
+          });
+        }
+      }
+
+      // Update the post
+      await post.update({ title, content });
+
+      res.status(200).json(post);
+    } catch (error) {
+      res.status(500).json({ error: "Internal server error" });
+    }
   }
 
   //remove post
@@ -154,7 +179,6 @@ class PostController {
     try {
       const { id } = req.params;
       const currentUser = req.user;
-      currentUser.role = "admin";
       // Find the post by ID
       const post = await db.Post.findByPk(id);
 
