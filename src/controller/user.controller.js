@@ -66,36 +66,54 @@ class Usercontroller {
       const payload = {
         username: username,
         role: user.role,
-        id:user.id
+        id: user.id,
       };
 
-      jwt.sign(
-        payload,
-        secretKey,
-        (err, token) => {
-          if (err) {
-            throw err;
-          }
-         return res.status(200).json({
-            success: true,
-            token: token,
-          });
+      jwt.sign(payload, secretKey, (err, token) => {
+        if (err) {
+          throw err;
         }
-      );
+        return res.status(200).json({
+          success: true,
+          token: token,
+        });
+      });
     } catch (err) {
       console.log(err.message);
       return res.status(500).send("Server error");
     }
   }
 
-  async getUsers (req, res) {
+  async getUsers(req, res) {
     try {
-        const users = await db.User.findAll()
-       return  res.status(201).json({ "status": "ok", "message": "Get User", users })
+      const currentUser = req.user;
+      //authorization
+      if (currentUser.role === "user") {
+        return res
+          .status(403)
+          .json({ message: "access denied.only admin and author has access" });
+      }
+      const users = await db.User.findAll();
+      if(!users){
+        return res.status(404).json({ status: "user not found", message: error });
+      }
+      return res.status(201).json({ status: "ok", message: "Get User", users });
     } catch (error) {
-        return res.status(401).json({ "status": "error", "message": error })
+        res.status(500).json({ error: "Internal server error" });
     }
-}
+  }
+  async getOwnProfile(req, res) {
+    try {
+      const users = await db.User.findAll({where:{id:req.user.id}});
+      if(!users){
+        return res.status(404).json({ status: "user not found", message: error });
+      }
+      return res.status(201).json({ status: "ok", message: "Get User", users });
+
+    } catch (error) {
+        res.status(500).json({ error: "Internal server error" });
+    }
+  }
 }
 
 module.exports = Usercontroller;

@@ -13,6 +13,8 @@ router.post('/create',userController.register);
 //user login route
 router.post('/login',userController.login);
 //get all users
-router.get('/',auth,userController.getUsers);
+router.get('/users',auth,userController.getUsers);
+//get own profile
+router.get('/',auth,userController.getOwnProfile);
 
 module.exports= router;

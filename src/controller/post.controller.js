@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
 const db = require("../models/index");
-const { query } = require("express");
+// const { query } = require("express");
 
 class PostController {
   //function to create new post
@@ -143,12 +143,18 @@ class PostController {
       res.status(500).json({ error: "Internal server error", error });
     }
   }
-  async updatePost(req, res) {}
 
+  //update post
+  async updatePost(req, res) {
+
+  }
+
+  //remove post
   async removePost(req, res) {
     try {
       const { id } = req.params;
-
+      const currentUser = req.user;
+      currentUser.role = "admin";
       // Find the post by ID
       const post = await db.Post.findByPk(id);
 
@@ -168,44 +174,38 @@ class PostController {
         ],
       });
 
-    //   console.log("*******", tags);
-
       //authorization
-      if (req.user.role === "user") {
-        if (req.user.id === post.userId) {
-          // Remove associations between post and tags
-          await post.removeTag(post.Tag);
-          // Delete the post
-          await post.destroy();
-        } else {
-          return res
-            .status(200)
-            .json({ error: "not authorized to delet others post" });
+      if (currentUser.role === "user") {
+        if (post.userId !== currentUser.id) {
+          return res.status(403).json({
+            meaasge: "access denied.only admin and author has access",
+          });
         }
-      } else {
-        // Delete the post
-        await post.destroy();
       }
 
       //   //delete tags if not in use
-    //   for (const tag of tags) {
-    //     const p = await db.Post.findAll({
-    //       include: [
-    //         {
-    //           model: db.Tag,
-    //           // as:'tags',
-    //           attributes: [],
-    //           where: { id: tag.id },
-    //         },
-    //       ],
-    //     });
-    //     console.log(">>>>",p)
-    //     if (!p) {
-    //       //delet post from Tag table
-    //       const count = await db.Tag.destroy({ where: { id: tag.id } });
-    //     }
-    //   }
+      //   for (const tag of tags) {
+      //     const p = await db.Post.findAll({
+      //       include: [
+      //         {
+      //           model: db.Tag,
+      //           // as:'tags',
+      //           attributes: [],
+      //           where: { id: tag.id },
+      //         },
+      //       ],
+      //     });
+      //     console.log(">>>>",p)
+      //     if (!p) {
+      //       //delet post from Tag table
+      //       const count = await db.Tag.destroy({ where: { id: tag.id } });
+      //     }
+      //   }
 
+      // Remove associations between post and tags
+      await post.removeTag(post.Tag);
+      // Delete the post
+      await post.destroy();
       res.status(200).json({ message: "deleted successfully", tags });
     } catch (error) {
       res.status(500).json({ error: "Internal server error", error });

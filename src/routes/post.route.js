@@ -18,6 +18,6 @@ router.post('/create', postController.createPost);
 //delet post
 router.delete('/:id', postController.removePost);
 //update post
-router.put('/:uuid', postController.updatePost);
+router.put('/:postId', postController.updatePost);
 
 module.exports= router;
